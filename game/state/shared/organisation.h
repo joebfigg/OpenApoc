@@ -128,6 +128,10 @@ class Organisation : public StateObject<Organisation>
 
 	sp<Image> icon;
 
+	// Human organisation tech level. Advances by one at the start of each week and
+	// selects which EQUIPMENTSET_HUMAN_n set arms this org's guards. The original
+	// game extracts twelve such sets, so twelve is the ceiling.
+	static constexpr int MAX_TECH_LEVEL = 12;
 	int tech_level = 1;
 	int average_guards = 1;
 	// What guard types can spawn, supports duplicates to provide variable probability
@@ -151,6 +155,7 @@ class Organisation : public StateObject<Organisation>
 	void updateMissions(GameState &state);
 	void updateHirableAgents(GameState &state);
 	void updateInfiltration(GameState &state);
+	void updateTechLevel();
 	void updateTakeOver(GameState &state, unsigned int ticks);
 	void updateVehicleAgentPark(GameState &state);
 	void updateDailyInfiltrationHistory();

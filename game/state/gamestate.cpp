@@ -1465,9 +1465,26 @@ void GameState::updateEndOfWeek(bool gameStart)
 
 	if (!gameStart)
 	{
+		updateOrgTechLevels();
+
 		for (auto &c : this->cities)
 		{
 			c.second->weeklyLoop(*this);
+		}
+	}
+}
+
+void GameState::updateOrgTechLevels()
+{
+	// Every human organisation gains a tech level at the start of each week, which is
+	// what escalates the equipment their guards carry as a campaign runs on. The player
+	// draws no equipment from this, and alien loadouts are score-driven, so both are
+	// skipped.
+	for (auto &[id, org] : organisations)
+	{
+		if (id != player.id && id != aliens.id)
+		{
+			org->updateTechLevel();
 		}
 	}
 }

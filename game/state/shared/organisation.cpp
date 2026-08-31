@@ -599,6 +599,17 @@ void Organisation::updateHirableAgents(GameState &state)
 	}
 }
 
+void Organisation::updateTechLevel()
+{
+	// Human organisations advance one tech level at the start of every week, up to a
+	// ceiling of twelve. Alien equipment is chosen by player score rather than by tech
+	// level, so the alien org is left alone here.
+	if (tech_level < MAX_TECH_LEVEL)
+	{
+		tech_level++;
+	}
+}
+
 void Organisation::updateInfiltration(GameState &state)
 {
 	StateRef<Organisation> org = {&state, id};

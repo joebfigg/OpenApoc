@@ -264,6 +264,7 @@ class GameState : public std::enable_shared_from_this<GameState>
 	void updateUfoGrowth();
 	void updateItemMarket();
 	void updateOrgFinances();
+	void updateOrgTechLevels();
 	void weeklyPlayerUpdate();
 	int calculateFundingModifier() const;
 
