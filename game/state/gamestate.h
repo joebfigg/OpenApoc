@@ -122,6 +122,14 @@ class GameState : public std::enable_shared_from_this<GameState>
 	bool firstDetection = false;
 	uint64_t nextInvasion = 0;
 
+	// Snapshot of the most recent weekly funding assessment, captured by
+	// weeklyPlayerUpdate() before it rolls player->income forward. The weekly funding
+	// screen opens from a queued event after that mutation has happened, so it must
+	// display these rather than recompute from live state.
+	int fundingReportIncome = 0;
+	int fundingReportAdjustment = 0;
+	bool fundingReportCapped = false;
+
 	StateRefMap<AgentType> agent_types;
 	StateRefMap<AgentBodyType> agent_body_types;
 	StateRefMap<AgentEquipmentLayout> agent_equipment_layouts;

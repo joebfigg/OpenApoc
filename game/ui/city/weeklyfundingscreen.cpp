@@ -68,7 +68,6 @@ void WeeklyFundingScreen::begin()
 	else
 	{
 		const int rating = state->weekScore.getTotal();
-		const int modifier = state->calculateFundingModifier();
 
 		int neutralRatingThreshold = 0;
 		if (!state->weekly_rating_rules.empty())
@@ -77,13 +76,16 @@ void WeeklyFundingScreen::begin()
 			neutralRatingThreshold = state->weekly_rating_rules.back().first;
 		}
 
-		const int availableGovFunds = government->balance / 2;
+		// By the time this screen opens, weeklyPlayerUpdate() has already paid this
+		// week's income and rolled player->income forward to next week's value.
+		// Recomputing from live state here displayed next week's income as the current
+		// one and derived the adjustment from the wrong base, so show the snapshot the
+		// update captured instead.
+		currentIncome = state->fundingReportIncome;
+		const int adjustment = state->fundingReportAdjustment;
 
-		if (availableGovFunds < currentIncome)
+		if (state->fundingReportCapped)
 		{
-			// Reduce this week's income if government doesn't have enough funds
-			currentIncome = (availableGovFunds < 0) ? 0 : availableGovFunds;
-
 			ratingDescription = tr("Unfortunately the Senate has to limit X-COM funding due to the "
 			                       "poor state of government finances.");
 		}
@@ -104,13 +106,11 @@ void WeeklyFundingScreen::begin()
 			labelNextWeekIncome->Location.y -= 44;
 		}
 
-		// Income adjustment is still based on base player funding, not current one
-		const int adjustment = (modifier == 0) ? 0 : player->income / modifier;
-
 		labelAdjustment->setText(
 		    format(tr("Funding adjustment> ${0}"), state->formatCurrency(adjustment)));
-		labelNextWeekIncome->setText(format(tr("Income for next week> ${0}"),
-		                                    state->formatCurrency(currentIncome + adjustment)));
+		// player->income already carries the adjustment for next week
+		labelNextWeekIncome->setText(
+		    format(tr("Income for next week> ${0}"), state->formatCurrency(player->income)));
 	}
 
 	labelCurrentIncome->setText(

@@ -71,6 +71,9 @@
     <member>baseIndex</member>
     <member>difficulty</member>
     <member>fundingTerminated</member>
+    <member>fundingReportIncome</member>
+    <member>fundingReportAdjustment</member>
+    <member>fundingReportCapped</member>
     <member>firstDetection</member>
     <member>nextInvasion</member>
   </object>

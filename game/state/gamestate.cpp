@@ -1506,7 +1506,8 @@ void GameState::weeklyPlayerUpdate()
 
 			// Reduce this week's income if government doesn't have enough funds
 			const int availableGovFunds = government->balance / 2;
-			if (availableGovFunds < income)
+			const bool capped = availableGovFunds < income;
+			if (capped)
 			{
 				income = (availableGovFunds < 0) ? 0 : availableGovFunds;
 			}
@@ -1515,11 +1516,20 @@ void GameState::weeklyPlayerUpdate()
 			player->balance += income;
 			government->balance -= income;
 
+			// The adjustment is based on the base player funding, not the possibly
+			// capped amount actually paid this week
 			const int fundingModifier = calculateFundingModifier();
-			if (fundingModifier != 0)
-			{
-				player->income += player->income / fundingModifier;
-			}
+			const int adjustment =
+			    (fundingModifier == 0) ? 0 : player->income / fundingModifier;
+
+			// Snapshot what this assessment looked like before rolling income forward;
+			// the weekly funding screen opens later, from a queued event, and displays
+			// these values
+			fundingReportIncome = income;
+			fundingReportAdjustment = adjustment;
+			fundingReportCapped = capped;
+
+			player->income += adjustment;
 		}
 	}
 
