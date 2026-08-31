@@ -2612,11 +2612,15 @@ void VehicleMission::start(GameState &state, Vehicle &v)
 		}
 		case MissionType::SelfDestruct:
 		{
-			if (v.smokeDoodad)
-			{
-				LogError("Restarting self destruct?");
-			}
-			else
+			// Starting self destruct on a vehicle that already has its smoke doodad is
+			// legitimate after a save/load cycle: crash() sets the crashed flag before
+			// this mission ever starts, the smoke doodad is not serialized, and
+			// loadGame() recreates it for any crashed vehicle in
+			// TileMap::addObjectToMap. So a save made between crashing and this
+			// mission reaching the front of the queue would hit the old "Restarting
+			// self destruct?" error on load (#1613). Just make sure the vehicle ends
+			// up crashed with its smoke in place, and do nothing if it already is.
+			if (!v.crashed || !v.smokeDoodad)
 			{
 				v.setCrashed(state);
 			}
