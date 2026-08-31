@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<openapoc_modinfo>
+	<name>Modern Weapons</name>
+	<author>Joseph</author>
+	<version>0.1</version>
+	<description>Modern ballistic weapon platforms with distinct handling profiles. Adds the Osiron Arms 109 assault rifle (hard-hitting, rugged, cheap) and the Marsec-15A carbine (accurate, fast-handling, premium), each with its own magazine, market availability and character-sheet art.</description>
+	<link></link>
+	<id>org.joseph.modern_weapons</id>
+	<datapath>data</datapath>
+	<statepath>modern_weapons_gamestate</statepath>
+	<minversion></minversion>
+	<difficulty_submods />
+	<requires>
+		<entry>org.openapoc.base</entry>
+	</requires>
+	<conflicts />
+	<languages />
+</openapoc_modinfo>

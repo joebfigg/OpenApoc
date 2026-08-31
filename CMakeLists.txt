@@ -117,6 +117,7 @@ add_subdirectory(game/ui)
 add_subdirectory(tools)
 add_subdirectory(dependencies)
 add_subdirectory(data/mods/crashing_vehicles)
+add_subdirectory(data/mods/modern_weapons)
 
 if (WIN32)
 	set(sources ${sources} "apocicon.rc")

@@ -47,6 +47,20 @@ add_test(NAME ${TEST} COMMAND ${TEST}
 		${CMAKE_SOURCE_DIR}/data/mods/base/base_gamestate
 		--Framework.CD=${CD_PATH} --Framework.Data=${CMAKE_SOURCE_DIR}/data)
 
+# test_modern_weapons verifies the modern_weapons mod loads and links
+set(TEST test_modern_weapons)
+add_executable(${TEST} ${TEST}.cpp)
+target_link_libraries(${TEST} OpenApoc_Library OpenApoc_Framework
+		OpenApoc_GameState)
+target_compile_definitions(${TEST} PRIVATE -DUNIT_TEST)
+add_test(NAME ${TEST} COMMAND ${TEST}
+		${CMAKE_SOURCE_DIR}/data/mods/base/data/submods/org.openapoc.base/difficulty0
+		${CMAKE_SOURCE_DIR}/data/mods/base/base_gamestate
+		${CMAKE_SOURCE_DIR}/data/mods/modern_weapons/modern_weapons_gamestate
+		--Game.Mods=base:modern_weapons
+		--Game.ModPath=${CMAKE_SOURCE_DIR}/data/mods
+		--Framework.CD=${CD_PATH} --Framework.Data=${CMAKE_SOURCE_DIR}/data)
+
 # test_lab_assignment requires args (same as test_serialize)
 set(TEST test_lab_assignment)
 add_executable(${TEST} ${TEST}.cpp)

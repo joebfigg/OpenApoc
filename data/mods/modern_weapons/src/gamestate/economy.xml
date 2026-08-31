@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<economy>
+  <entry><key>AEQUIPMENTTYPE_OA_109</key>
+    <value><weekAvailable>1</weekAvailable>
+      <basePrice>550</basePrice>
+      <minStock>10</minStock>
+      <maxStock>28</maxStock>
+    </value>
+  </entry>
+  <entry><key>AEQUIPMENTTYPE_OA_109_CLIP</key>
+    <value><weekAvailable>1</weekAvailable>
+      <basePrice>15</basePrice>
+      <minStock>40</minStock>
+      <maxStock>80</maxStock>
+    </value>
+  </entry>
+  <entry><key>AEQUIPMENTTYPE_MARSEC_15A</key>
+    <value><weekAvailable>1</weekAvailable>
+      <basePrice>900</basePrice>
+      <minStock>8</minStock>
+      <maxStock>20</maxStock>
+    </value>
+  </entry>
+  <entry><key>AEQUIPMENTTYPE_MARSEC_15A_CLIP</key>
+    <value><weekAvailable>1</weekAvailable>
+      <basePrice>25</basePrice>
+      <minStock>35</minStock>
+      <maxStock>70</maxStock>
+    </value>
+  </entry>
+</economy>
