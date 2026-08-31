@@ -45,6 +45,13 @@ void Organisation::takeOver(GameState &state, bool forced)
 	{
 		return;
 	}
+	// A fully infiltrated organisation is granted an immediate three tech levels over
+	// its current level, on top of the normal weekly advancement. Applied only on the
+	// transition so a repeated (forced) takeover cannot stack it.
+	if (!takenOver)
+	{
+		tech_level = std::min(tech_level + 3, MAX_TECH_LEVEL);
+	}
 	takenOver = true;
 	militarized = true;
 	infiltrationValue = 200;
