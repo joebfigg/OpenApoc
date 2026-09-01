@@ -4,6 +4,7 @@
 #include "game/state/gamestate.h"
 #include "game/state/gamestate_serialize.h"
 #include "game/state/rules/aequipmenttype.h"
+#include "game/state/rules/agenttype.h"
 #include "library/strings.h"
 #include <iostream>
 
@@ -89,6 +90,57 @@ static bool checkWeapon(sp<GameState> state, const UString &weaponId, const UStr
 	return true;
 }
 
+// The mod appends radio voice lines to the vanilla pools (3 male / 2 female each).
+// List deserialization appends and map deserialization merges by key, so after the
+// mod loads the pools must be larger than vanilla and every sample non-null.
+static bool checkVoices(sp<GameState> state, const UString &agentTypeId)
+{
+	using Gender = OpenApoc::AgentType::Gender;
+	auto it = state->agent_types.find(agentTypeId);
+	if (it == state->agent_types.end())
+	{
+		LogError("{0} not present in agent_types", agentTypeId);
+		return false;
+	}
+	auto type = it->second;
+
+	struct Check
+	{
+		const char *name;
+		Gender gender;
+		size_t vanilla;
+		std::list<sp<OpenApoc::Sample>> *pool;
+	};
+	const Check checks[] = {
+	    {"damageSfx male", Gender::Male, 3, &type->damageSfx[Gender::Male]},
+	    {"damageSfx female", Gender::Female, 2, &type->damageSfx[Gender::Female]},
+	    {"fatalWoundSfx male", Gender::Male, 3, &type->fatalWoundSfx[Gender::Male]},
+	    {"fatalWoundSfx female", Gender::Female, 2, &type->fatalWoundSfx[Gender::Female]},
+	    {"dieSfx male", Gender::Male, 3, &type->dieSfx[Gender::Male]},
+	    {"dieSfx female", Gender::Female, 2, &type->dieSfx[Gender::Female]},
+	};
+	for (const auto &c : checks)
+	{
+		if (c.pool->size() <= c.vanilla)
+		{
+			LogError("{0} {1}: pool size {2} not grown past vanilla {3}", agentTypeId, c.name,
+			         (unsigned)c.pool->size(), (unsigned)c.vanilla);
+			return false;
+		}
+		for (const auto &s : *c.pool)
+		{
+			if (!s)
+			{
+				LogError("{0} {1}: contains a null sample (a WAV failed to load)", agentTypeId,
+				         c.name);
+				return false;
+			}
+		}
+	}
+	LogInfo("{0} voice pools verified", agentTypeId);
+	return true;
+}
+
 int main(int argc, char **argv)
 {
 	config().addPositionalArgument("common", "Common gamestate to load");
@@ -140,6 +192,15 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 	if (!checkWeapon(state, "AEQUIPMENTTYPE_MARSEC_15A", "AEQUIPMENTTYPE_MARSEC_15A_CLIP"))
+	{
+		return EXIT_FAILURE;
+	}
+
+	if (!checkVoices(state, "AGENTTYPE_X-COM_AGENT_HUMAN"))
+	{
+		return EXIT_FAILURE;
+	}
+	if (!checkVoices(state, "AGENTTYPE_X-COM_AGENT_HYBRID"))
 	{
 		return EXIT_FAILURE;
 	}
