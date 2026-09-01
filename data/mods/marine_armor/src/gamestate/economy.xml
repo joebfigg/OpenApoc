@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<economy>
+  <entry><key>AEQUIPMENTTYPE_MARINE_BODY_ARMOR</key>
+    <value><weekAvailable>1</weekAvailable>
+      <basePrice>1400</basePrice>
+      <minStock>6</minStock>
+      <maxStock>16</maxStock>
+    </value>
+  </entry>
+  <entry><key>AEQUIPMENTTYPE_MARINE_LEG_ARMOR</key>
+    <value><weekAvailable>1</weekAvailable>
+      <basePrice>950</basePrice>
+      <minStock>6</minStock>
+      <maxStock>16</maxStock>
+    </value>
+  </entry>
+  <entry><key>AEQUIPMENTTYPE_MARINE_HELMET</key>
+    <value><weekAvailable>1</weekAvailable>
+      <basePrice>800</basePrice>
+      <minStock>8</minStock>
+      <maxStock>20</maxStock>
+    </value>
+  </entry>
+  <entry><key>AEQUIPMENTTYPE_MARINE_LEFT_ARM</key>
+    <value><weekAvailable>1</weekAvailable>
+      <basePrice>600</basePrice>
+      <minStock>8</minStock>
+      <maxStock>20</maxStock>
+    </value>
+  </entry>
+  <entry><key>AEQUIPMENTTYPE_MARINE_RIGHT_ARM</key>
+    <value><weekAvailable>1</weekAvailable>
+      <basePrice>600</basePrice>
+      <minStock>8</minStock>
+      <maxStock>20</maxStock>
+    </value>
+  </entry>
+</economy>

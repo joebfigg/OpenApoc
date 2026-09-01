@@ -141,49 +141,82 @@ static bool checkVoices(sp<GameState> state, const UString &agentTypeId)
 	return true;
 }
 
-// The marine armor mod replaces the base X-COM agent appearance with its own
-// five body-part image packs. Verify the appearance is the marine one and that
-// every body part is present - a typo in a pack name would otherwise only show
-// up as an invisible limb in battle.
-static bool checkArmorAppearance(sp<GameState> state)
+// The marine armor set is purchasable equipment, one item per body part, each
+// binding the matching restyled image pack. Worn armor overrides the agent's
+// base appearance per body part (Agent::getImagePack checks the armor slot
+// first), so the marine look comes from equipping these rather than from
+// replacing the unarmored body.
+static bool checkArmorSet(sp<GameState> state)
 {
 	using BodyPart = OpenApoc::BodyPart;
-	auto it = state->agent_types.find("AGENTTYPE_X-COM_AGENT_HUMAN");
-	if (it == state->agent_types.end())
+	const struct
 	{
-		LogError("X-COM agent type missing");
-		return false;
-	}
-	auto type = it->second;
-	if (type->image_packs.size() != 1)
-	{
-		LogError("expected exactly one appearance after the marine override, got {0}",
-		         (unsigned)type->image_packs.size());
-		return false;
-	}
-	const std::pair<BodyPart, const char *> expect[] = {
-	    {BodyPart::Body, "BATTLEUNITIMAGEPACK_marine1a"},
-	    {BodyPart::Legs, "BATTLEUNITIMAGEPACK_marine1b"},
-	    {BodyPart::Helmet, "BATTLEUNITIMAGEPACK_marine1c"},
-	    {BodyPart::LeftArm, "BATTLEUNITIMAGEPACK_marine1d"},
-	    {BodyPart::RightArm, "BATTLEUNITIMAGEPACK_marine1e"},
+		const char *id;
+		BodyPart part;
+		const char *pack;
+	} pieces[] = {
+	    {"AEQUIPMENTTYPE_MARINE_BODY_ARMOR", BodyPart::Body, "BATTLEUNITIMAGEPACK_marine1a"},
+	    {"AEQUIPMENTTYPE_MARINE_LEG_ARMOR", BodyPart::Legs, "BATTLEUNITIMAGEPACK_marine1b"},
+	    {"AEQUIPMENTTYPE_MARINE_HELMET", BodyPart::Helmet, "BATTLEUNITIMAGEPACK_marine1c"},
+	    {"AEQUIPMENTTYPE_MARINE_LEFT_ARM", BodyPart::LeftArm, "BATTLEUNITIMAGEPACK_marine1d"},
+	    {"AEQUIPMENTTYPE_MARINE_RIGHT_ARM", BodyPart::RightArm, "BATTLEUNITIMAGEPACK_marine1e"},
 	};
-	auto &appearance = type->image_packs[0];
-	for (const auto &e : expect)
+
+	for (const auto &p : pieces)
 	{
-		auto p = appearance.find(e.first);
-		if (p == appearance.end())
+		auto it = state->agent_equipment.find(p.id);
+		if (it == state->agent_equipment.end())
 		{
-			LogError("appearance missing a body part");
+			LogError("{0} not present in agent_equipment", p.id);
 			return false;
 		}
-		if (p->second.id != e.second)
+		auto item = it->second;
+		if (item->type != AEquipmentType::Type::Armor)
 		{
-			LogError("body part points at {0}, expected {1}", p->second.id, e.second);
+			LogError("{0} is not Armor", p.id);
+			return false;
+		}
+		if (item->body_part != p.part)
+		{
+			LogError("{0} covers the wrong body part", p.id);
+			return false;
+		}
+		if (item->body_image_pack.id != p.pack)
+		{
+			LogError("{0} binds {1}, expected {2}", p.id, item->body_image_pack.id, p.pack);
+			return false;
+		}
+		if (!item->body_sprite || !item->equipscreen_sprite)
+		{
+			LogError("{0} paper doll or inventory art failed to load", p.id);
+			return false;
+		}
+		if (item->armor <= 0)
+		{
+			LogError("{0} has no armor value", p.id);
+			return false;
+		}
+		if (state->economy.find(p.id) == state->economy.end())
+		{
+			LogError("{0} is not purchasable - missing from economy", p.id);
 			return false;
 		}
 	}
-	LogInfo("marine armor appearance verified (5 body parts)");
+
+	// The unarmored appearance must be left alone: the marine look is worn, not innate.
+	auto at = state->agent_types.find("AGENTTYPE_X-COM_AGENT_HUMAN");
+	if (at != state->agent_types.end() && !at->second->image_packs.empty())
+	{
+		auto body = at->second->image_packs[0].find(BodyPart::Body);
+		if (body != at->second->image_packs[0].end() &&
+		    body->second.id.find("marine") != OpenApoc::UString::npos)
+		{
+			LogError("base unarmored appearance was overridden; it should stay vanilla");
+			return false;
+		}
+	}
+
+	LogInfo("marine armor set verified (5 purchasable pieces)");
 	return true;
 }
 
@@ -266,7 +299,7 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	if (!checkArmorAppearance(state))
+	if (!checkArmorSet(state))
 	{
 		return EXIT_FAILURE;
 	}
