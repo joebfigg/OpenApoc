@@ -9,7 +9,8 @@ param(
     [string]$RepoRoot = "C:\Users\joebf\Developer\projects\openapoc",
     [string]$Palette = "xcom3/tacdata/tactical.pal"
 )
-$ErrorActionPreference = 'Stop'
+# ImageDump logs routine warnings to stderr; don't let those become terminating
+$ErrorActionPreference = 'Continue'
 $dump = Join-Path $RepoRoot 'build\bin\OpenApoc_ImageDump.exe'
 $packFile = Join-Path $RepoRoot "data\imagepacks\$Pack"
 $dst = Join-Path $OutDir $Pack
