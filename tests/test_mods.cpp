@@ -145,7 +145,8 @@ int main(int argc, char **argv)
 {
 	config().addPositionalArgument("common", "Common gamestate to load");
 	config().addPositionalArgument("gamestate", "Gamestate to load");
-	config().addPositionalArgument("mod", "Mod gamestate to load");
+	config().addPositionalArgument("mod", "modern_weapons gamestate to load");
+	config().addPositionalArgument("mod2", "agent_voices gamestate to load");
 
 	if (config().parseOptions(argc, argv))
 	{
@@ -155,9 +156,10 @@ int main(int argc, char **argv)
 	auto common_name = config().getString("common");
 	auto gamestate_name = config().getString("gamestate");
 	auto mod_name = config().getString("mod");
-	if (common_name.empty() || gamestate_name.empty() || mod_name.empty())
+	auto mod2_name = config().getString("mod2");
+	if (common_name.empty() || gamestate_name.empty() || mod_name.empty() || mod2_name.empty())
 	{
-		std::cerr << "Must provide common, gamestate and mod paths\n";
+		std::cerr << "Must provide common, gamestate and both mod paths\n";
 		config().showHelp();
 		return EXIT_FAILURE;
 	}
@@ -180,7 +182,12 @@ int main(int argc, char **argv)
 	}
 	if (!state->loadGame(mod_name))
 	{
-		LogError("Failed to load mod gamestate");
+		LogError("Failed to load modern_weapons gamestate");
+		return EXIT_FAILURE;
+	}
+	if (!state->loadGame(mod2_name))
+	{
+		LogError("Failed to load agent_voices gamestate");
 		return EXIT_FAILURE;
 	}
 
@@ -205,6 +212,6 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	LogInfo("Modern Weapons mod tests passed");
+	LogInfo("Mod tests passed (modern_weapons + agent_voices)");
 	return EXIT_SUCCESS;
 }

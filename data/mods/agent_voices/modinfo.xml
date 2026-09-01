@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<openapoc_modinfo>
+	<name>Agent Voices</name>
+	<author>Joseph</author>
+	<version>0.1</version>
+	<description>Radio-comms voice lines for X-COM agents. Vanilla reuses three male and two female grunts for every hit, wound and death; this adds distinct reactions, bleeding-out calls and last words for male and female human and hybrid agents. Androids stay silent.</description>
+	<link></link>
+	<id>org.joseph.agent_voices</id>
+	<datapath>data</datapath>
+	<statepath>agent_voices_gamestate</statepath>
+	<minversion></minversion>
+	<difficulty_submods />
+	<requires>
+		<entry>org.openapoc.base</entry>
+	</requires>
+	<conflicts />
+	<languages />
+</openapoc_modinfo>

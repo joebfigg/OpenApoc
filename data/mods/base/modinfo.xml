@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<openapoc_modinfo>
+	<name>OpenApoc base game</name>
+	<author>OpenApoc team</author>
+	<version>0.1</version>
+	<description>The base OpenApoc game</description>
+	<link>http://www.openapoc.org</link>
+	<id>org.openapoc.base</id>
+	<datapath>data</datapath>
+	<statepath>base_gamestate</statepath>
+	<minversion></minversion>
+	<difficulty_submods>
+		<entry difficulty="0">submods/org.openapoc.base/difficulty0</entry>
+		<entry difficulty="1">submods/org.openapoc.base/difficulty1</entry>
+		<entry difficulty="2">submods/org.openapoc.base/difficulty2</entry>
+		<entry difficulty="3">submods/org.openapoc.base/difficulty3</entry>
+		<entry difficulty="4">submods/org.openapoc.base/difficulty4</entry>
+	</difficulty_submods>
+	<requires />
+	<conflicts />
+	<languages>
+		<entry>
+			<ID>en.UTF-8</ID>
+			<patch></patch>
+			<data>lang/data/en.UTF-8</data>
+		</entry>
+	</languages>
+</openapoc_modinfo>

@@ -3,7 +3,7 @@
 	<name>Modern Weapons</name>
 	<author>Joseph</author>
 	<version>0.1</version>
-	<description>Modern ballistic weapon platforms with distinct handling profiles. Adds the Osiron Arms 109 assault rifle (hard-hitting, rugged, cheap) and the Marsec-15A carbine (accurate, fast-handling, premium), each with its own magazine, market availability and character-sheet art.</description>
+	<description>Modern ballistic weapon platforms with distinct handling profiles. Adds the Osiron Arms 109 assault rifle (hard-hitting, rugged, cheap) and the Marsec-15A carbine (accurate, fast-handling, premium), each with its own magazine, market availability and character-sheet art. Battle sprites are shared between platforms by design; the platforms differ on the character sheet and in their stats.</description>
 	<link></link>
 	<id>org.joseph.modern_weapons</id>
 	<datapath>data</datapath>

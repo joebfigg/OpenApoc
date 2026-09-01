@@ -47,8 +47,8 @@ add_test(NAME ${TEST} COMMAND ${TEST}
 		${CMAKE_SOURCE_DIR}/data/mods/base/base_gamestate
 		--Framework.CD=${CD_PATH} --Framework.Data=${CMAKE_SOURCE_DIR}/data)
 
-# test_modern_weapons verifies the modern_weapons mod loads and links
-set(TEST test_modern_weapons)
+# test_mods verifies the content mods load, link and coexist
+set(TEST test_mods)
 add_executable(${TEST} ${TEST}.cpp)
 target_link_libraries(${TEST} OpenApoc_Library OpenApoc_Framework
 		OpenApoc_GameState)
@@ -57,7 +57,8 @@ add_test(NAME ${TEST} COMMAND ${TEST}
 		${CMAKE_SOURCE_DIR}/data/mods/base/data/submods/org.openapoc.base/difficulty0
 		${CMAKE_SOURCE_DIR}/data/mods/base/base_gamestate
 		${CMAKE_SOURCE_DIR}/data/mods/modern_weapons/modern_weapons_gamestate
-		--Game.Mods=base:modern_weapons
+		${CMAKE_SOURCE_DIR}/data/mods/agent_voices/agent_voices_gamestate
+		--Game.Mods=base:modern_weapons:agent_voices
 		--Game.ModPath=${CMAKE_SOURCE_DIR}/data/mods
 		--Framework.CD=${CD_PATH} --Framework.Data=${CMAKE_SOURCE_DIR}/data)
 

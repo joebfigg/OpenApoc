@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<openapoc_modinfo>
+	<name>Night City</name>
+	<author>Joseph</author>
+	<version>0.1</version>
+	<description>Neon-noir regrade of Mega-Primus. The cityscape renders through three time-of-day palettes; regrading those restyles every tile at once - concrete and shadow go cool blue-steel, bright entries become neon light sources, and daylight is pulled down to an overcast dusk. No sprites are modified.</description>
+	<link></link>
+	<id>org.joseph.night_city</id>
+	<datapath>data</datapath>
+	<statepath></statepath>
+	<minversion></minversion>
+	<difficulty_submods />
+	<requires>
+		<entry>org.openapoc.base</entry>
+	</requires>
+	<conflicts />
+	<languages />
+</openapoc_modinfo>

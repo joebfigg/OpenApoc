@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<openapoc_modinfo>
+	<name>Marine Armor</name>
+	<author>Joseph</author>
+	<version>0.1</version>
+	<description>Colonial-marine restyle of X-COM agent armor: bulky olive plate over camouflage fatigues in place of the vanilla look. Ships the reskin toolchain (frame dump, image pack build, shared palette lock) used to produce the sprite layers.</description>
+	<link></link>
+	<id>org.joseph.marine_armor</id>
+	<datapath>data</datapath>
+	<statepath></statepath>
+	<minversion></minversion>
+	<difficulty_submods />
+	<requires>
+		<entry>org.openapoc.base</entry>
+	</requires>
+	<conflicts />
+	<languages />
+</openapoc_modinfo>
