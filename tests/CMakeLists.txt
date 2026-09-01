@@ -58,7 +58,8 @@ add_test(NAME ${TEST} COMMAND ${TEST}
 		${CMAKE_SOURCE_DIR}/data/mods/base/base_gamestate
 		${CMAKE_SOURCE_DIR}/data/mods/modern_weapons/modern_weapons_gamestate
 		${CMAKE_SOURCE_DIR}/data/mods/agent_voices/agent_voices_gamestate
-		--Game.Mods=base:modern_weapons:agent_voices
+		${CMAKE_SOURCE_DIR}/data/mods/marine_armor/marine_armor_gamestate
+		--Game.Mods=base:modern_weapons:agent_voices:marine_armor
 		--Game.ModPath=${CMAKE_SOURCE_DIR}/data/mods
 		--Framework.CD=${CD_PATH} --Framework.Data=${CMAKE_SOURCE_DIR}/data)
 

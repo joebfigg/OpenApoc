@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<agent_types>
+  <!-- Replace the base X-COM agent appearance with the colonial-marine restyle.
+       image_packs is a vector and appends by default; op="delete" clears the
+       vanilla appearance first so agents are marines rather than a random mix.
+       Drop the op attribute to keep both and get mixed squads instead. -->
+  <entry><key>AGENTTYPE_X-COM_AGENT_HUMAN</key>
+    <value>
+      <image_packs op="delete"><entry>
+          <entry><key>Body</key>
+            <value>BATTLEUNITIMAGEPACK_marine1a</value>
+          </entry>
+          <entry><key>Legs</key>
+            <value>BATTLEUNITIMAGEPACK_marine1b</value>
+          </entry>
+          <entry><key>Helmet</key>
+            <value>BATTLEUNITIMAGEPACK_marine1c</value>
+          </entry>
+          <entry><key>LeftArm</key>
+            <value>BATTLEUNITIMAGEPACK_marine1d</value>
+          </entry>
+          <entry><key>RightArm</key>
+            <value>BATTLEUNITIMAGEPACK_marine1e</value>
+          </entry>
+        </entry>
+        <sizeHint>1</sizeHint>
+      </image_packs>
+    </value>
+  </entry>
+</agent_types>

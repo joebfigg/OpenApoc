@@ -32,8 +32,8 @@ def main():
     ap.add_argument("--repo", default=DEFAULT_REPO)
     args = ap.parse_args()
 
-    mod = os.path.join(args.repo, "data", "mods", "modern_weapons", "data")
-    png_dst = os.path.join(mod, "modern_weapons", "units", args.pack_name)
+    mod = os.path.join(args.repo, "data", "mods", "marine_armor", "data")
+    png_dst = os.path.join(mod, "marine_armor", "units", args.pack_name)
     pack_dst_dir = os.path.join(mod, "imagepacks")
     os.makedirs(png_dst, exist_ok=True)
     os.makedirs(pack_dst_dir, exist_ok=True)
@@ -52,7 +52,7 @@ def main():
         if i in frames:
             shutil.copyfile(os.path.join(args.frames_dir, frames[i]),
                             os.path.join(png_dst, "%03d.png" % i))
-            entries.append("<entry>modern_weapons/units/%s/%03d.png</entry>"
+            entries.append("<entry>marine_armor/units/%s/%03d.png</entry>"
                            % (args.pack_name, i))
         else:
             entries.append("<entry></entry>")

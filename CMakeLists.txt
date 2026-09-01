@@ -119,6 +119,7 @@ add_subdirectory(dependencies)
 add_subdirectory(data/mods/crashing_vehicles)
 add_subdirectory(data/mods/modern_weapons)
 add_subdirectory(data/mods/agent_voices)
+add_subdirectory(data/mods/marine_armor)
 
 if (WIN32)
 	set(sources ${sources} "apocicon.rc")

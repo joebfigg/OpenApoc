@@ -7,7 +7,7 @@
 	<link></link>
 	<id>org.joseph.marine_armor</id>
 	<datapath>data</datapath>
-	<statepath></statepath>
+	<statepath>marine_armor_gamestate</statepath>
 	<minversion></minversion>
 	<difficulty_submods />
 	<requires>

@@ -141,12 +141,59 @@ static bool checkVoices(sp<GameState> state, const UString &agentTypeId)
 	return true;
 }
 
+// The marine armor mod replaces the base X-COM agent appearance with its own
+// five body-part image packs. Verify the appearance is the marine one and that
+// every body part is present - a typo in a pack name would otherwise only show
+// up as an invisible limb in battle.
+static bool checkArmorAppearance(sp<GameState> state)
+{
+	using BodyPart = OpenApoc::BodyPart;
+	auto it = state->agent_types.find("AGENTTYPE_X-COM_AGENT_HUMAN");
+	if (it == state->agent_types.end())
+	{
+		LogError("X-COM agent type missing");
+		return false;
+	}
+	auto type = it->second;
+	if (type->image_packs.size() != 1)
+	{
+		LogError("expected exactly one appearance after the marine override, got {0}",
+		         (unsigned)type->image_packs.size());
+		return false;
+	}
+	const std::pair<BodyPart, const char *> expect[] = {
+	    {BodyPart::Body, "BATTLEUNITIMAGEPACK_marine1a"},
+	    {BodyPart::Legs, "BATTLEUNITIMAGEPACK_marine1b"},
+	    {BodyPart::Helmet, "BATTLEUNITIMAGEPACK_marine1c"},
+	    {BodyPart::LeftArm, "BATTLEUNITIMAGEPACK_marine1d"},
+	    {BodyPart::RightArm, "BATTLEUNITIMAGEPACK_marine1e"},
+	};
+	auto &appearance = type->image_packs[0];
+	for (const auto &e : expect)
+	{
+		auto p = appearance.find(e.first);
+		if (p == appearance.end())
+		{
+			LogError("appearance missing a body part");
+			return false;
+		}
+		if (p->second.id != e.second)
+		{
+			LogError("body part points at {0}, expected {1}", p->second.id, e.second);
+			return false;
+		}
+	}
+	LogInfo("marine armor appearance verified (5 body parts)");
+	return true;
+}
+
 int main(int argc, char **argv)
 {
 	config().addPositionalArgument("common", "Common gamestate to load");
 	config().addPositionalArgument("gamestate", "Gamestate to load");
 	config().addPositionalArgument("mod", "modern_weapons gamestate to load");
 	config().addPositionalArgument("mod2", "agent_voices gamestate to load");
+	config().addPositionalArgument("mod3", "marine_armor gamestate to load");
 
 	if (config().parseOptions(argc, argv))
 	{
@@ -157,9 +204,11 @@ int main(int argc, char **argv)
 	auto gamestate_name = config().getString("gamestate");
 	auto mod_name = config().getString("mod");
 	auto mod2_name = config().getString("mod2");
-	if (common_name.empty() || gamestate_name.empty() || mod_name.empty() || mod2_name.empty())
+	auto mod3_name = config().getString("mod3");
+	if (common_name.empty() || gamestate_name.empty() || mod_name.empty() ||
+	    mod2_name.empty() || mod3_name.empty())
 	{
-		std::cerr << "Must provide common, gamestate and both mod paths\n";
+		std::cerr << "Must provide common, gamestate and all three mod paths\n";
 		config().showHelp();
 		return EXIT_FAILURE;
 	}
@@ -190,6 +239,11 @@ int main(int argc, char **argv)
 		LogError("Failed to load agent_voices gamestate");
 		return EXIT_FAILURE;
 	}
+	if (!state->loadGame(mod3_name))
+	{
+		LogError("Failed to load marine_armor gamestate");
+		return EXIT_FAILURE;
+	}
 
 	state->startGame();
 	state->initState();
@@ -212,6 +266,11 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	LogInfo("Mod tests passed (modern_weapons + agent_voices)");
+	if (!checkArmorAppearance(state))
+	{
+		return EXIT_FAILURE;
+	}
+
+	LogInfo("Mod tests passed (modern_weapons + agent_voices + marine_armor)");
 	return EXIT_SUCCESS;
 }
